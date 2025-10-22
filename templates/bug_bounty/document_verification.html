@@ -1,0 +1,233 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Verification | Cyber Posture</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="shortcut icon" href="{% static "images/icon.png" %}" type="image/x-icon">
+    <link rel="stylesheet" href="{% static "css/style.css" %}">
+</head>
+<body>
+    <!-- Navigation -->
+    {% include "navbar.html" %}
+    <!-- Overlay for mobile -->
+    <div class="overlay" onclick="closeMobileMenu()"></div>
+
+    <div class="app-container">
+        <!-- Sidebar -->
+         <aside class="sidebar">
+            <!-- Main Navigation -->
+            <a style="text-decoration: none;" href="{% url "core:dashboard" %}" class="sidebar-item" style="margin-bottom: 1.5rem;"><i class="fas fa-home"></i> Dashboard</a>
+            
+            <!-- Profile Management -->
+            <div class="sidebar-section">
+                <div class="sidebar-header" onclick="toggleSidebarSection(this)">
+                    <span>Company Tools</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="sidebar-items">
+                    <a style="text-decoration: none;" href="{% url "bug_bounty:bug_bounty_registration" %}" class="sidebar-item"><i class="fas fa-bug"></i> Bug Bounty</a>
+                    <a style="text-decoration: none;" href="{% url "bug_bounty:bug_bounty_submissions" %}" class="sidebar-item"><i class="fas fa-paper-plane"></i> Bug Bounty Submission</a>
+                </div>
+            </div>
+
+            <!-- Account -->
+            <div class="sidebar-section">
+                <div class="sidebar-header" onclick="toggleSidebarSection(this)">
+                    <span>Compliance</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="sidebar-items">
+                    <a style="text-decoration: none;" href="{% url "bug_bounty:documents_template" %}" class="sidebar-item"><i class="fas fa-file-alt"></i> Templates</a>
+                    <a style="text-decoration: none;" href="{% url "bug_bounty:compliance_ai" %}" class="sidebar-item"><i class="fas fa-gavel"></i> Compliance AI</a>
+
+                </div>
+            </div>
+
+            <!-- AI Analysis Tools -->
+            <div class="sidebar-section">
+                <div class="sidebar-header" onclick="toggleSidebarSection(this)">
+                    <span>Background Checks</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="sidebar-items">
+                    
+                    <a style="text-decoration: none;" href="{% url "bug_bounty:verify_document" %}" class="sidebar-item active"><i class="fas fa-file"></i> Document Verification</a>
+                    <a style="text-decoration: none;" href="{% url "bug_bounty:resume" %}" class="sidebar-item"><i class="fas fa-check"></i> Background Check</a>
+                    
+                </div>
+            </div>   
+        </aside>
+        <!-- Main Content -->
+        <main class="main-content">
+ 
+             <!-- Document Upload Card -->
+            <div class="upload-card">
+                <div class="upload-state-empty" id="uploadEmpty">
+                    <h2>Document Verification</h2>
+                    <p>Upload a document to verify its authenticity and extract information</p>
+                    
+                    <div class="upload-zone" onclick="document.getElementById('fileInput').click()">
+                        <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                        <div class="upload-text">Click to upload or drag and drop</div>
+                        <div class="upload-hint">Supports PDF, DOCX (Max 10MB)</div>
+                    </div>
+                    
+                    <input type="file" id="fileInput" class="file-input" accept=".pdf,.jpg,.jpeg,.png,.docx" onchange="handleFileUpload(this)">
+                </div>
+                
+                <div class="upload-state-filled" id="uploadFilled">
+                    <div class="file-preview">
+                        <div class="file-icon" id="fileIcon">
+                            <i class="fas fa-file"></i>
+                        </div>
+                        <div class="file-info">
+                            <h3 id="fileName">Document.pdf</h3>
+                            <div class="file-meta" id="fileMeta">2.3 MB • PDF Document</div>
+                        </div>
+                    </div>
+                    
+                    <div class="progress-container" id="progressContainer" style="display: none;">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill"></div>
+                        </div>
+                        <div class="progress-text" id="progressText">Analyzing document...</div>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button class="btn btn-primary" onclick="startVerification()" id="verifyBtn">
+                            <i class="fas fa-shield-alt"></i> Verify Document
+                        </button>
+                        <button class="btn btn-secondary" onclick="clearFile()">
+                            <i class="fas fa-trash"></i> Remove
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Verification Options -->
+            <div class="form-section">
+                <h3> Verification Options</h3>
+                <div class="checkbox-grid">
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="checkAuthenticity" checked>
+                        <i class="fas fa-certificate"></i>
+                        <label for="checkAuthenticity">Document Authenticity</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="checkMetadata" checked>
+                        <i class="fas fa-info-circle"></i>
+                        <label for="checkMetadata">Metadata Analysis</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="checkText" checked>
+                        <i class="fas fa-font"></i>
+                        <label for="checkText">Text Extraction</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="checkSecurity" checked>
+                        <i class="fas fa-lock"></i>
+                        <label for="checkSecurity">Security Features</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="checkSignature">
+                        <i class="fas fa-signature"></i>
+                        <label for="checkSignature">Digital Signature</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="checkTampering">
+                        <i class="fas fa-shield-virus"></i>
+                        <label for="checkTampering">Tampering Detection</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div class="results-section" id="resultsSection">
+                <div class="result-card">
+                    <div class="result-header">
+                        <div class="result-title">
+                            <i class="fas fa-certificate"></i> Document Authenticity
+                        </div>
+                        <span class="confidence-badge confidence-high" id="authenticityBadge">High Confidence</span>
+                    </div>
+                    <div class="result-content" id="authenticityResult">
+                        Document appears to be authentic based on structural analysis and security features.
+                    </div>
+                </div>
+
+                <div class="result-card">
+                    <div class="result-header">
+                        <div class="result-title">
+                            <i class="fas fa-info-circle"></i> Document Metadata
+                        </div>
+                        <span class="confidence-badge confidence-high">Verified</span>
+                    </div>
+                    <div class="result-content">
+                        <ul class="result-items" id="metadataList">
+                            <li><span class="status-icon status-verified"><i class="fas fa-check"></i></span> Creation Date: March 15, 2024</li>
+                            <li><span class="status-icon status-verified"><i class="fas fa-check"></i></span> Author: John Smith</li>
+                            <li><span class="status-icon status-verified"><i class="fas fa-check"></i></span> Application: Adobe Acrobat</li>
+                            <li><span class="status-icon status-pending"><i class="fas fa-clock"></i></span> Last Modified: March 20, 2024</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="result-card">
+                    <div class="result-header">
+                        <div class="result-title">
+                            <i class="fas fa-font"></i> Extracted Text
+                        </div>
+                        <span class="confidence-badge confidence-high">Processed</span>
+                    </div>
+                    <div class="result-content" id="extractedText">
+                        <div style="max-height: 200px; overflow-y: auto; padding: 1rem; background: var(--bg-primary); border-radius: var(--radius); font-family: monospace; font-size: 0.8rem;">
+                            This is a sample document containing important information...
+                        </div>
+                    </div>
+                </div>
+
+                <div class="result-card">
+                    <div class="result-header">
+                        <div class="result-title">
+                            <i class="fas fa-lock"></i> Security Analysis
+                        </div>
+                        <span class="confidence-badge confidence-medium" id="securityBadge">Medium Risk</span>
+                    </div>
+                    <div class="result-content">
+                        <ul class="result-items" id="securityList">
+                            <li><span class="status-icon status-verified"><i class="fas fa-check"></i></span> No malicious content detected</li>
+                            <li><span class="status-icon status-verified"><i class="fas fa-check"></i></span> File structure is valid</li>
+                            <li><span class="status-icon status-pending"><i class="fas fa-exclamation-triangle"></i></span> No digital signature found</li>
+                            <li><span class="status-icon status-verified"><i class="fas fa-check"></i></span> No embedded scripts</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <div id="toastMessage"></div>
+    </div>
+
+        </main>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <div id="toastMessage"></div>
+    </div>
+
+   
+
+    </body>
+
+<script src="{% static "js/script.js" %}"></script>
+<script src="{% static "js/document.js" %}"></script>
+
+</body>
+</html>

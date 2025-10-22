@@ -1,0 +1,202 @@
+{% load static %}
+<html lang="en">
+  <head>
+    <title>Cyber Posture</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&amp;display=swap"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&amp;display=swap"/>
+    <link rel="stylesheet" href="{% static "landing/css/bootstrap/bootstrap.min.css" %}"/>
+    <link rel="shortcut icon" href="{% static "images/icon.png" %}" type="image/x-icon">
+  </head>
+  <body>
+    <div>
+      <div>
+        <div>
+        </div>
+      </div>
+      <div>
+        <div>
+          <section style="background: #FFFFFF">
+            <div>
+              <nav class="navbar navbar-dark navbar-expand-lg bg-transparent py-5 py-lg-3 px-5">
+                <div class="container-fluid"><a class="navbar-brand" href="#"><img class="img-fluid" width="100px" src="{% static "images/landing.png" %}" alt=""/></a>
+                  <div class="collapse navbar-collapse ms-11">
+                    <ul class="navbar-nav">
+
+                        <li class="nav-item p-5"><a class="nav-link d-inline-block p-0" href="{% url "core:index" %}">
+                          <h3 class="fs-17 fw-medium text-secondary mb-0">Home</h3></a></li>
+                      
+
+                      <li class="nav-item p-5"><a class="nav-link d-inline-block p-0" href="#feature">
+                          <h3 class="fs-17 fw-medium text-secondary mb-0">Features</h3></a></li>
+
+                      <li class="nav-item p-5"><a class="nav-link d-inline-block p-0" href="{% url "bug_bounty:bug_bounty_landing" %}">
+                          <h3 class="fs-17 fw-medium text-secondary mb-0">Bug Bounty Program</h3></a></li>
+                      
+                      
+                    </ul>
+                  </div>
+                  <div class="d-none d-lg-block">
+                    <div class="row">
+                     
+                      <div class="col-auto"><a class="btn btn-link border border-dark fs-17" href="{% url "core:demo_loading" %}">See Demo</a></div>
+                    </div>
+                  </div>
+                  <div class="d-lg-none">
+                    <button class="btn navbar-burger p-0">
+                      <svg class="text-dark-light" width="51" height="51" viewbox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="56" height="56" rx="28" fill="currentColor"></rect>
+                        <path d="M37 32H19M37 24H19" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </nav>
+              <div class="d-none navbar-menu position-fixed top-0 start-0 bottom-0 w-75 mw-xs" style="z-index: 9999;">
+                <div class="navbar-close navbar-backdrop position-fixed top-0 start-0 end-0 bottom-0 bg-dark" style="opacity: 75%;"></div>
+                <nav class="position-relative h-100 w-100 d-flex flex-column justify-content-between py-8 px-8 bg-white overflow-auto">
+                  <div class="d-flex align-items-center"><a class="me-auto h4 mb-0 text-decoration-none" href="#"><img class="img-fluid" width="90px" src="{% static "images/icon.png" %}" alt=""/></a>                    <a class="navbar-close" href="#">
+                      <svg width="24" height="24" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M6 18L18 6M6 6L18 18" stroke="#111827" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                      </svg></a></div>
+                  <div class="py-16">
+                    <ul class="nav flex-column">
+                      <li class="nav-item mb-12"><a class="nav-link d-inline-block p-0" href="{% url "core:index" %}">
+                          <h3 class="fs-17 fw-medium text-secondary mb-0">Home</h3></a>
+                      </li>
+                      <li class="nav-item mb-12"><a class="nav-link d-inline-block p-0" href="{% url "bug_bounty:bug_bounty_landing" %}">
+                          <h3 class="fs-17 fw-medium text-secondary mb-0">Bug Bounty Program</h3></a>
+                      </li>
+                      
+                    </ul>
+                  </div>
+                  <div><a class="btn btn-link border fs-17" href="{% url "core:demo_loading" %}">See Demo</a></div>
+                </nav>
+              </div>
+            </div>
+            <div class="overflow-hidden pt-32 pb-36">
+              <div class="container">
+                <div class="row align-items-center g-16">
+                  <div class="col-12 col-md-6">
+                    <div class="mw-md-xl">
+                      <h4 class="d-inline-block px-5 py-3 fs-20 fw-semibold mb-8 text-primary-dark text-uppercase rounded-pill" style="letter-spacing: 1px; background: linear-gradient(90.41deg, #E0E7FF 0.25%, rgba(224, 231, 255, 0) 99.64%);">Secure Your SME Today</h4>
+                      <h2 class="fs-5 mb-6">Strengthen Your Digital Defense</h2>
+                      <p class="fs-17 text-muted mb-9">Everything your business needs to stay secure - from employee verification to legal compliance - in one integrated platform</p>
+                      <a style="text-decoration: none;" href="{% url "core:demo_loading" %}"> <button class="btn btn-secondary px-10 py-5" type="button"><span class="fs-20 text-white text-uppercase fw-semibold mb-0" style="letter-spacing: 1px;"></span>See Demo</button></a>
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-6"><img class="img-fluid" src="{% static "landing/images/hero2.png" %}" alt=""/></div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+         <section id="feature" class="pt-28 pb-20 bg-white overflow-hidden">
+        <div class="container">
+            <div class="text-center mb-28">
+                <h3 class="fs-20 fw-semibold text-secondary-light text-uppercase mb-6" style="letter-spacing: 1px;">The features that made us special</h3>
+                <h2 class="fs-10 fw-semibold mb-0">Complete Cybersecurity Arsenal</h2>
+            </div>
+            <div class="mw-6xl mx-auto">
+                <div class="row g-16">
+                    <!-- Background Verification -->
+                    <div class="col-12 col-lg-4">
+                        <div class="text-center feature-card">
+                            <svg class="mx-auto mb-9 feature-icon" width="50" height="50" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M25 4.16667C29.6024 4.16667 33.3333 7.89763 33.3333 12.5V16.6667H37.5C39.8012 16.6667 41.6667 18.5321 41.6667 20.8333V41.6667C41.6667 43.9679 39.8012 45.8333 37.5 45.8333H12.5C10.1988 45.8333 8.33333 43.9679 8.33333 41.6667V20.8333C8.33333 18.5321 10.1988 16.6667 12.5 16.6667H16.6667V12.5C16.6667 7.89763 20.3976 4.16667 25 4.16667ZM25 8.33333C22.6988 8.33333 20.8333 10.1988 20.8333 12.5V16.6667H29.1667V12.5C29.1667 10.1988 27.3012 8.33333 25 8.33333ZM25 25C27.3012 25 29.1667 26.8655 29.1667 29.1667C29.1667 31.4679 27.3012 33.3333 25 33.3333C22.6988 33.3333 20.8333 31.4679 20.8333 29.1667C20.8333 26.8655 22.6988 25 25 25Z" stroke="#18181B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <h3 class="fs-16 fw-medium lh-base mb-3">Background Verification</h3>
+                            <p class="fs-16 fw-medium lh-base mb-0 text-muted">AI-powered background checks and resume verification with comprehensive web scraping capabilities.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Bug Bounty Program -->
+                    <div class="col-12 col-lg-4">
+                        <div class="text-center feature-card">
+                            <svg class="mx-auto mb-8 feature-icon" width="50" height="50" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M25 6.25C25 6.25 35.4167 10.4167 35.4167 20.8333C35.4167 31.25 25 43.75 25 43.75C25 43.75 14.5833 31.25 14.5833 20.8333C14.5833 10.4167 25 6.25 25 6.25Z" stroke="#18181B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M20.8333 20.8333L22.9167 22.9167L29.1667 16.6667" stroke="#18181B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <h3 class="fs-16 fw-medium lh-base mb-3">Bug Bounty Program</h3>
+                            <p class="fs-16 fw-medium lh-base mb-0 text-muted">Comprehensive vulnerability assessment and bug bounty management platform for your applications.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Legal AI Assistant -->
+                    <div class="col-12 col-lg-4">
+                        <div class="text-center feature-card">
+                            <svg class="mx-auto mb-8 feature-icon" width="50" height="50" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M10.4167 8.33333H39.5833C40.7339 8.33333 41.6667 9.26607 41.6667 10.4167V37.5C41.6667 38.6506 40.7339 39.5833 39.5833 39.5833H10.4167C9.26607 39.5833 8.33333 38.6506 8.33333 37.5V10.4167C8.33333 9.26607 9.26607 8.33333 10.4167 8.33333Z" stroke="#18181B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M16.6667 18.75H33.3333" stroke="#18181B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M16.6667 25H33.3333" stroke="#18181B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M16.6667 31.25H27.0833" stroke="#18181B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                                <circle cx="32" cy="32" r="6" stroke="#18181B" stroke-width="2"/>
+                                <path d="M35 29L31 33L29 31" stroke="#18181B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <h3 class="fs-16 fw-medium lh-base mb-3">Compliance AI Assistant</h3>
+                            <p class="fs-16 fw-medium lh-base mb-0 text-muted">AI-powered compliance document generation, contract analysis, and compliance checking tools.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Document Verification -->
+                    <div class="col-12 col-lg-4">
+                        <div class="text-center feature-card">
+                            <svg class="mx-auto mb-8 feature-icon" width="50" height="50" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12.5 6.25H31.25L39.5833 14.5833V41.6667C39.5833 43.0473 38.4639 44.1667 37.0833 44.1667H12.5C11.1194 44.1667 10 43.0473 10 41.6667V8.75C10 7.36929 11.1194 6.25 12.5 6.25Z" stroke="#18181B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M31.25 6.25V14.5833H39.5833" stroke="#18181B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M18.75 25H30.2083" stroke="#18181B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M18.75 31.25H30.2083" stroke="#18181B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                                <circle cx="35" cy="35" r="8" stroke="#18181B" stroke-width="2"/>
+                                <path d="M32 35L34 37L38 33" stroke="#18181B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <h3 class="fs-16 fw-medium lh-base mb-3">Document Verification</h3>
+                            <p class="fs-16 fw-medium lh-base mb-0 text-muted">Advanced document authenticity checking and verification using machine learning algorithms.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Legal Templates -->
+                    <div class="col-12 col-lg-4">
+                        <div class="text-center feature-card">
+                            <svg class="mx-auto mb-8 feature-icon" width="50" height="50" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M8.33301 12.5C8.33301 10.1988 10.1985 8.33334 12.4997 8.33334H16.6663C18.9675 8.33334 20.833 10.1988 20.833 12.5V16.6667C20.833 18.9679 18.9675 20.8333 16.6663 20.8333H12.4997C10.1985 20.8333 8.33301 18.9679 8.33301 16.6667V12.5Z" stroke="#18181B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M29.1663 12.5C29.1663 10.1988 31.0318 8.33334 33.333 8.33334H37.4997C39.8009 8.33334 41.6663 10.1988 41.6663 12.5V16.6667C41.6663 18.9679 39.8009 20.8333 37.4997 20.8333H33.333C31.0318 20.8333 29.1663 18.9679 29.1663 16.6667V12.5Z" stroke="#18181B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M8.33301 33.3333C8.33301 31.0322 10.1985 29.1667 12.4997 29.1667H16.6663C18.9675 29.1667 20.833 31.0322 20.833 33.3333V37.5C20.833 39.8012 18.9675 41.6667 16.6663 41.6667H12.4997C10.1985 41.6667 8.33301 39.8012 8.33301 37.5V33.3333Z" stroke="#18181B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M29.1663 33.3333C29.1663 31.0322 31.0318 29.1667 33.333 29.1667H37.4997C39.8009 29.1667 41.6663 31.0322 41.6663 33.3333V37.5C41.6663 39.8012 39.8009 41.6667 37.4997 41.6667H33.333C31.0318 41.6667 29.1663 39.8012 29.1663 37.5V33.3333Z" stroke="#18181B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <h3 class="fs-16 fw-medium lh-base mb-3">Compliance Templates</h3>
+                            <p class="fs-16 fw-medium lh-base mb-0 text-muted">Pre-built compliance document templates and contract frameworks for common business needs.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+     
+      
+      
+      <section class="position-relative pt-24 pb-32 bg-secondary overflow-hidden">
+        <div class="position-relative container" style="z-index: 50;">
+          <div class="mw-2xl mb-12">
+            <h2 class="fs-10 mb-4 text-white">Public Bug Bounty Program</h2>
+            <p class="fs-17 text-white">The most comprehensive list of bug bounty and security vulnerability disclosure programs.</p>
+          </div>
+          <div class="mw-2xl">
+            <div class="container mb-8">
+              <div class="row g-3">
+                <div class="col-12 col-md-auto">                </div>
+                <div class="col-12 col-md-auto"><a class="d-md-inline-block h-100 btn btn-light fs-17 px-14 w-100 rounded-pill" href="{% url "bug_bounty:bug_bounty_landing" %}" type="button" style="border-radius: 3px; width: 180px;">Bug Bounty Program</a></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      <p style="font-size: 19px; color: #FFFFFF; padding-top: 2rem; margin-bottom: 0; text-align: center;">© 2025 Cyber Posture SME. Protecting Enterprises Worldwide</p>
+      </section>
+      
+    </div>
+    <script src="{% static "landing/js/bootstrap/bootstrap.bundle.min.js" %}"></script>
+    <script src="{% static "landing/js/main.js" %}"></script>
+  </body>
+</html>

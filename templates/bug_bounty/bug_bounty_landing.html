@@ -1,0 +1,266 @@
+{% load static %}
+<html lang="en">
+  <head>
+    <title>Bug Bounty Program</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&amp;display=swap"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&amp;display=swap"/>
+    <link rel="stylesheet" href="{% static "landing/css/bootstrap/bootstrap.min.css" %}"/>
+    <link rel="shortcut icon" href="{% static "images/icon.png" %}" type="image/x-icon">
+    <style>
+           .ad-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            max-height: 100px; /* Instead of height: 300px */
+
+        }
+
+        .billboard-ad {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+
+        .billboard-ad:hover {
+            transform: scale(1.02);
+        }
+
+        /* Responsive design for different screen sizes */
+        @media screen and (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .ad-container {
+                border-radius: 5px;
+            }
+            
+            .billboard-ad:hover {
+                transform: none; /* Disable hover effect on mobile */
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            body {
+                padding: 5px;
+            }
+            
+            .ad-container {
+                border-radius: 0;
+                box-shadow: none;
+            }
+        }
+
+        /* For very large screens */
+        @media screen and (min-width: 1400px) {
+            .ad-container {
+                max-width: 1400px;
+            }
+        }
+
+        /* Optional: Loading placeholder */
+        .billboard-ad[src=""] {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+            min-height: 300px;
+        }
+
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+    </style>
+  </head>
+  <body>
+    <div>
+      <div>
+        <div>
+   
+        </div>
+      </div>
+      <div>
+        <div>
+       
+
+          <section style="background: #FFFFFF">
+            
+            <div>
+              <nav class="navbar navbar-dark navbar-expand-lg bg-transparent py-5 py-lg-3 px-5">
+                <div class="container-fluid"><a class="navbar-brand" href="#"><img class="img-fluid" width="100px" src="{% static "images/landing.png" %}" alt=""/></a>
+                  <div class="collapse navbar-collapse ms-11">
+                    <ul class="navbar-nav">
+
+                      <li class="nav-item p-5"><a class="nav-link d-inline-block p-0" href="{% url "core:index" %}">
+                          <h3 class="fs-17 fw-medium text-secondary mb-0">Home</h3></a></li>
+
+                          <li class="nav-item p-5"><a class="nav-link d-inline-block p-0" href="{% url 'core:index' %}#feature">
+                          <h3 class="fs-17 fw-medium text-secondary mb-0">Features</h3></a></li>
+
+                      <li class="nav-item p-5"><a class="nav-link d-inline-block p-0" href="{% url "bug_bounty:bug_bounty_landing" %}">
+                          <h3 class="fs-17 fw-medium text-secondary mb-0">Bug Bounty Program</h3></a></li>
+                      
+                      
+                    </ul>
+                  </div>
+                  <div class="d-none d-lg-block">
+                    <div class="row">
+                     
+                      <div class="col-auto"><a class="btn btn-link border border-dark fs-17" href="{% url "core:demo_loading" %}">See Demo</a></div>
+                    </div>
+                  </div>
+                  <div class="d-lg-none">
+                    <button class="btn navbar-burger p-0">
+                      <svg class="text-dark-light" width="51" height="51" viewbox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="56" height="56" rx="28" fill="currentColor"></rect>
+                        <path d="M37 32H19M37 24H19" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </nav>
+              <div class="d-none navbar-menu position-fixed top-0 start-0 bottom-0 w-75 mw-xs" style="z-index: 9999;">
+                <div class="navbar-close navbar-backdrop position-fixed top-0 start-0 end-0 bottom-0 bg-dark" style="opacity: 75%;"></div>
+                <nav class="position-relative h-100 w-100 d-flex flex-column justify-content-between py-8 px-8 bg-white overflow-auto">
+                  <div class="d-flex align-items-center"><a class="me-auto h4 mb-0 text-decoration-none" href="#"><img class="img-fluid" width="90px" src="{% static "images/icon.png" %}" alt=""/></a>                    <a class="navbar-close" href="#">
+                      <svg width="24" height="24" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M6 18L18 6M6 6L18 18" stroke="#111827" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                      </svg></a></div>
+                  <div class="py-16">
+                    <ul class="nav flex-column">
+
+                        <li class="nav-item mb-12"><a class="nav-link d-inline-block p-0" href="{% url 'core:index' %}">
+                          <h3 class="fs-17 fw-medium text-secondary mb-0">Home</h3></a>
+                      </li>
+
+                      <li class="nav-item mb-12"><a class="nav-link d-inline-block p-0" href="#feature">
+                          <h3 class="fs-17 fw-medium text-secondary mb-0">Bug Bounty Program</h3></a>
+                      </li>
+                      
+                    </ul>
+                  </div>
+                  <div><a class="btn btn-link border fs-17" href="{% url "core:demo_loading" %}">See Demo</a></div>
+                </nav>
+              </div>
+            </div>
+            
+          </section>
+
+           <div class="ad-container">
+
+             
+    <div class="ad-container">
+        <img src="{% static "landing/images/ads.png" %}" alt="Rent This Space - Billboard Advertisement" class="billboard-ad" loading="lazy">
+    </div>
+        
+    </div>
+
+        <section class="py-28 bg-white overflow-hidden">
+        <div class="container">
+          <div class="row g-16 g-md-24">
+            <div class="col-12 col-md-4">
+              <div class="fs-12 mb-0 lh-sm"><span>More than</span>
+                <h3 class="d-inline-block mb-0" style="background: linear-gradient(98.24deg, #FFB36D 0%, #EC5353 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">2,450</h3><span>vulnerabilities discovered and patched</span>
+              </div>
+            </div>
+            <div class="col-12 col-md-4">
+              <div class="fs-12 mb-0 lh-sm"><span>Reduced security incidents by</span>
+                <h3 class="d-inline-block mb-0" style="background: linear-gradient(98.24deg, #6C2DD1 0%, #FF7DBC 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">89%</h3><span>across all client applications</span>
+              </div>
+            </div>
+            <div class="col-12 col-md-4">
+              <div class="fs-12 mb-0 lh-sm"><span>Over</span>
+                <h3 class="d-inline-block mb-0" style="background: linear-gradient(98.24deg, #56C1E3 0%, #5B6AF0 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">350+</h3><span>certified ethical hackers in our network</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+        </div>
+      </div>
+
+       <section class="pt-24 pb-32 bg-white overflow-hidden">
+        <div class="container">
+          <h2 class="fs-7 mb-20">Available Bug Bounty Program</h2>
+          
+          <div class="row mb-12 g-6">
+            {% for company in companies %}
+              <div class="col-12 col-md-4"><a href="{% url "bug_bounty:bug_list_bank" company.id %}">
+                <div class="h-100 p-6 border rounded-1">
+                  <h3 class="fs-20 fw-semibold text-dark text-uppercase mb-7" style="letter-spacing: 1px;">{{company.program.get_program_range_display}}</h3>
+                  <h3 class="fs-17 fw-semibold mb-2"> {{company.company_name}} </h3>
+                  <p class="text-muted mb-0"> {{company.program.get_program_type_display}} </p>
+                </div></a></div>
+            {% endfor %}
+            {% comment %} <div class="col-12 col-md-4"><a href="{% url "bug_bounty:bug_list_bank" %}">
+                <div class="h-100 p-6 border rounded-1">
+                  <h3 class="fs-20 fw-semibold text-dark text-uppercase mb-7" style="letter-spacing: 1px;">$100,000/year</h3>
+                  <h3 class="fs-17 fw-semibold mb-2">Access Bank</h3>
+                  <p class="text-muted mb-0">Public Program</p>
+                </div></a></div>
+            
+                <div class="col-12 col-md-4"><a href="{% url "bug_bounty:bug_list_bank" %}">
+                <div class="h-100 p-6 border rounded-1">
+                  <h3 class="fs-20 fw-semibold text-dark text-uppercase mb-7" style="letter-spacing: 1px;">$100,000/year</h3>
+                  <h3 class="fs-17 fw-semibold mb-2">Sterling Bank</h3>
+                  <p class="text-muted mb-0">Public Program</p>
+                </div></a></div>
+
+
+                 <div class="col-12 col-md-4"><a href="{% url "bug_bounty:bug_list_bank" %}">
+                <div class="h-100 p-6 border rounded-1">
+                  <h3 class="fs-20 fw-semibold text-dark text-uppercase mb-7" style="letter-spacing: 1px;">$100,000/year</h3>
+                  <h3 class="fs-17 fw-semibold mb-2">Wema Bank</h3>
+                  <p class="text-muted mb-0">Public Program</p>
+                </div></a></div>
+
+
+                <div class="col-12 col-md-4"><a href="{% url "bug_bounty:bug_list_bank" %}">
+                <div class="h-100 p-6 border rounded-1">
+                  <h3 class="fs-20 fw-semibold text-dark text-uppercase mb-7" style="letter-spacing: 1px;">$100,000/year</h3>
+                  <h3 class="fs-17 fw-semibold mb-2">Polaris Bank</h3>
+                  <p class="text-muted mb-0">Public Program</p>
+                </div></a></div>
+
+                <div class="col-12 col-md-4"><a href="{% url "bug_bounty:bug_list_bank" %}">
+                <div class="h-100 p-6 border rounded-1">
+                  <h3 class="fs-20 fw-semibold text-dark text-uppercase mb-7" style="letter-spacing: 1px;">$100,000/year</h3>
+                  <h3 class="fs-17 fw-semibold mb-2">Opay Bank</h3>
+                  <p class="text-muted mb-0">Public Program</p>
+                </div></a></div> {% endcomment %}
+          </div>
+          
+          </div>
+        </div>
+      </section>
+
+      <section class="position-relative pt-24 pb-32 bg-secondary overflow-hidden">
+        <div class="position-relative container" style="z-index: 50;">
+          <div class="mw-2xl mb-12">
+            <h2 class="fs-10 mb-4 text-white">Secure Your SME Today</h2>
+            <p class="fs-17 text-white">Comprehensive cybersecurity solutions designed specifically for small and medium enterprises.</p>
+          </div>
+          <div class="mw-2xl">
+            <div class="container mb-8">
+              <div class="row g-3">
+                <div class="col-12 col-md-auto">                </div>
+                <div class="col-12 col-md-auto"><a class="d-md-inline-block h-100 btn btn-light fs-17 px-14 w-100 rounded-pill" href="{% url "core:demo_loading" %}" type="button" style="border-radius: 3px; width: 180px;">See Demo</a></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      <p style="font-size: 19px; color: #FFFFFF; padding-top: 2rem; margin-bottom: 0; text-align: center;">© 2025 Cyber Posture SME. Protecting Enterprises Worldwide</p>
+      </section>
+            
+    </div>
+    <script src="{% static "landing/js/bootstrap/bootstrap.bundle.min.js" %}"></script>
+    <script src="{% static "landing/js/main.js" %}"></script>
+  </body>
+</html>

@@ -1,0 +1,408 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Template | Cyber Posture</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="shortcut icon" href="{% static "images/icon.png" %}" type="image/x-icon">
+    <link rel="stylesheet" href="{% static "css/style.css" %}">
+    <style>
+    .template-categories {
+        display: flex;
+        flex-direction: column;
+        gap: 2.5rem;
+    }
+
+    .category-group {
+        background: var(--bg-primary);
+        border-radius: var(--radius-lg);
+        padding: 2rem;
+        border: 1px solid var(--border-color);
+    }
+
+    .category-title {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .template-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 1.25rem;
+    }
+
+    .template-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius);
+        padding: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        transition: var(--transition);
+        position: relative;
+    }
+
+    .template-card:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-lg);
+        border-color: var(--primary-blue);
+    }
+
+    .template-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: var(--radius);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.25rem;
+        flex-shrink: 0;
+    }
+
+    .template-icon.legal { background: var(--primary-blue); }
+    .template-icon.hr { background: var(--success); }
+    .template-icon.finance { background: var(--warning); }
+    .template-icon.operations { background: var(--error); }
+
+    .template-info {
+        flex: 1;
+    }
+
+    .template-info h5 {
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: 0.5rem;
+    }
+
+    .template-info p {
+        color: var(--text-secondary);
+        font-size: 0.875rem;
+        margin-bottom: 0.75rem;
+        line-height: 1.4;
+    }
+
+    .template-meta {
+        display: flex;
+        gap: 1rem;
+        font-size: 0.75rem;
+        color: var(--text-muted);
+    }
+
+    .template-meta span {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+    }
+
+    .download-btn {
+        width: 40px;
+        height: 40px;
+        border-radius: var(--radius);
+        background: var(--primary-gradient);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        transition: var(--transition);
+        flex-shrink: 0;
+        font-size: 1rem;
+    }
+
+    .download-btn:hover {
+        transform: scale(1.1);
+        box-shadow: var(--shadow);
+    }
+
+    @media (max-width: 768px) {
+        .template-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .category-group {
+            padding: 1.5rem;
+        }
+        
+        .template-card {
+            flex-direction: column;
+            text-align: center;
+            gap: 1.5rem;
+        }
+        
+        .template-info {
+            text-align: center;
+        }
+        
+        .template-meta {
+            justify-content: center;
+        }
+    }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    {% include "navbar.html" %}
+    <!-- Overlay for mobile -->
+    <div class="overlay" onclick="closeMobileMenu()"></div>
+
+    <div class="app-container">
+        <!-- Sidebar -->
+         <aside class="sidebar">
+            <!-- Main Navigation -->
+            <a style="text-decoration: none;" href="{% url "core:dashboard" %}" class="sidebar-item" style="margin-bottom: 1.5rem;"><i class="fas fa-home"></i> Dashboard</a>
+            
+            <!-- Profile Management -->
+            <div class="sidebar-section">
+                <div class="sidebar-header" onclick="toggleSidebarSection(this)">
+                    <span>Company Tools</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="sidebar-items">
+                    <a style="text-decoration: none;" href="{% url "bug_bounty:bug_bounty_registration" %}" class="sidebar-item"><i class="fas fa-bug"></i> Bug Bounty</a>
+                    <a style="text-decoration: none;" href="{% url "bug_bounty:bug_bounty_submissions" %}" class="sidebar-item"><i class="fas fa-paper-plane"></i> Bug Bounty Submission</a>
+                </div>
+            </div>
+
+            <!-- Account -->
+            <div class="sidebar-section">
+                <div class="sidebar-header" onclick="toggleSidebarSection(this)">
+                    <span>Compliance</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="sidebar-items">
+                    <a style="text-decoration: none;" href="{% url "bug_bounty:documents_template" %}" class="sidebar-item active"><i class="fas fa-file-alt"></i> Templates</a>
+                    <a style="text-decoration: none;" href="{% url "bug_bounty:compliance_ai" %}" class="sidebar-item"><i class="fas fa-gavel"></i> Compliance AI</a>
+
+                </div>
+            </div>
+
+            <!-- AI Analysis Tools -->
+            <div class="sidebar-section">
+                <div class="sidebar-header" onclick="toggleSidebarSection(this)">
+                    <span>Background Checks</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="sidebar-items">
+                    
+                    <a style="text-decoration: none;" href="{% url "bug_bounty:verify_document" %}" class="sidebar-item"><i class="fas fa-file"></i> Document Verification</a>
+                    <a style="text-decoration: none;" href="{% url "bug_bounty:resume" %}" class="sidebar-item"><i class="fas fa-check"></i> Background Check</a>
+                    
+                </div>
+            </div>   
+        </aside>
+        <!-- Main Content -->
+        <main class="main-content">
+
+            <!-- Document Templates Section -->
+<div class="form-section">
+    <center><h1>Document Templates</h1></center>
+    <center><p style="color: var(--text-secondary); margin-bottom: 2rem;">Download professional document templates for your business needs</p></center>
+    
+    <!-- Template Categories -->
+    <div class="template-categories">
+        <!-- Legal Documents -->
+        <div class="category-group">
+            <h4 class="category-title">
+                 Legal Documents
+            </h4>
+            <div class="template-grid">
+                <div class="template-card">
+                    <div class="template-icon legal">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <div class="template-info">
+                        <h5>Non-Disclosure Agreement (NDA)</h5>
+                        <p>Protect confidential information in business relationships</p>
+                        <div class="template-meta">
+                            <span><i class="fas fa-file-word"></i> DOCX</span>
+                           
+                        </div>
+                    </div>
+                    <a href="{% static "documents/NDA_Template.docx" %}" class="download-btn" download>
+                        <i class="fas fa-download"></i>
+                    </a>
+                </div>
+
+                <div class="template-card">
+                    <div class="template-icon legal">
+                        <i class="fas fa-file-contract"></i>
+                    </div>
+                    <div class="template-info">
+                        <h5>Service Agreement</h5>
+                        <p>Standard service contract template for client work</p>
+                        <div class="template-meta">
+                            <span><i class="fas fa-file-word"></i> DOCX</span>
+                           
+                        </div>
+                    </div>
+                    <a href="{% static "documents/Service_Agreement_Template.docx" %}" class="download-btn" download>
+                        <i class="fas fa-download"></i>
+                    </a>
+                </div>
+
+                <div class="template-card">
+                    <div class="template-icon legal">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <div class="template-info">
+                        <h5>Terms of Service</h5>
+                        <p>Website and app terms of service template</p>
+                        <div class="template-meta">
+                            <span><i class="fas fa-file-word"></i> DOCX</span>
+                           
+                        </div>
+                    </div>
+                    <a href="documents/Terms_of_Service_Template.docx" class="download-btn" download>
+                        <i class="fas fa-download"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- HR Documents -->
+        <div class="category-group">
+            <h4 class="category-title">
+             HR Documents
+            </h4>
+            <div class="template-grid">
+                <div class="template-card">
+                    <div class="template-icon hr">
+                        <i class="fas fa-user-plus"></i>
+                    </div>
+                    <div class="template-info">
+                        <h5>Employment Contract</h5>
+                        <p>Comprehensive employment agreement template</p>
+                        <div class="template-meta">
+                            <span><i class="fas fa-file-word"></i> DOCX</span>
+                           
+                        </div>
+                    </div>
+                    <a href="{% static "documents/EMPLOYMENT CONTRACT.docx" %}" class="download-btn" download>
+                        <i class="fas fa-download"></i>
+                    </a>
+                </div>
+
+                <div class="template-card">
+                    <div class="template-icon hr">
+                        <i class="fas fa-clipboard-list"></i>
+                    </div>
+                    <div class="template-info">
+                        <h5>Employee Handbook</h5>
+                        <p>Complete employee handbook template</p>
+                        <div class="template-meta">
+                            <span><i class="fas fa-file-word"></i> DOCX</span>
+                           
+                        </div>
+                    </div>
+                    <a href="{% static "documents/EMPLOYEE HANDBOOK.docx" %}" class="download-btn" download>
+                        <i class="fas fa-download"></i>
+                    </a>
+                </div>
+
+                <div class="template-card">
+                    <div class="template-icon hr">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="template-info">
+                        <h5>Performance Review</h5>
+                        <p>Employee performance evaluation form</p>
+                        <div class="template-meta">
+                            <span><i class="fas fa-file-word"></i> DOCX</span>
+                        
+                        </div>
+                    </div>
+                    <a href="{% static "documents/PERFORMANCE REVIEW TEMPLATE.docx" %}" class="download-btn" download>
+                        <i class="fas fa-download"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        
+
+        <!-- Business Operations -->
+        <div class="category-group">
+            <h4 class="category-title">
+            Business Operations
+            </h4>
+            <div class="template-grid">
+                <div class="template-card">
+                    <div class="template-icon operations">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <div class="template-info">
+                        <h5>Business Plan</h5>
+                        <p>Comprehensive business plan template for startups</p>
+                        <div class="template-meta">
+                            <span><i class="fas fa-file-word"></i> DOCX</span>
+                            
+                        </div>
+                    </div>
+                    <a href="{% static "documents/Business_Plan_Template.docx" %}" class="download-btn" download>
+                        <i class="fas fa-download"></i>
+                    </a>
+                </div>
+
+                <div class="template-card">
+                    <div class="template-icon operations">
+                        <i class="fas fa-tasks"></i>
+                    </div>
+                    <div class="template-info">
+                        <h5>Project Proposal</h5>
+                        <p>Professional project proposal template</p>
+                        <div class="template-meta">
+                            <span><i class="fas fa-file-word"></i> DOCX</span>
+                            
+                        </div>
+                    </div>
+                    <a href="{% static "documents/Project_Proposal_Template.docx" %}" class="download-btn" download>
+                        <i class="fas fa-download"></i>
+                    </a>
+                </div>
+
+                <div class="template-card">
+                    <div class="template-icon operations">
+                        <i class="fas fa-clipboard-check"></i>
+                    </div>
+                    <div class="template-info">
+                        <h5>SOP Template</h5>
+                        <p>Standard Operating Procedures template</p>
+                        <div class="template-meta">
+                            <span><i class="fas fa-file-word"></i> DOCX</span>
+                           
+                        </div>
+                    </div>
+                    <a href="{% static "documents/SOP_Template.docx" %}" class="download-btn" download>
+                        <i class="fas fa-download"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+        </main>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <div id="toastMessage"></div>
+    </div>
+    </body>
+
+<script src="{% static "js/script.js" %}"></script>
+</body>
+</html>

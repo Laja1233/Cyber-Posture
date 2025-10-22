@@ -1,0 +1,112 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compliance AI | Cyber Posture</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="shortcut icon" href="{% static "images/icon.png" %}" type="image/x-icon">
+    <link rel="stylesheet" href="{% static "css/style.css" %}">
+    <link rel="stylesheet" href="{% static "css/chat.css" %}">
+</head>
+<body>
+    <!-- Navigation -->
+     {% include "navbar.html" %}
+    <!-- Overlay for mobile -->
+    <div class="overlay" onclick="closeMobileMenu()"></div>
+
+    <div class="app-container">
+        <!-- Sidebar -->
+         <aside class="sidebar">
+            <!-- Main Navigation -->
+            <a style="text-decoration: none;" href="{% url "core:dashboard" %}" class="sidebar-item" style="margin-bottom: 1.5rem;"><i class="fas fa-home"></i> Dashboard</a>
+            
+            <!-- Profile Management -->
+            <div class="sidebar-section">
+                <div class="sidebar-header" onclick="toggleSidebarSection(this)">
+                    <span>Company Tools</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="sidebar-items">
+                    <a style="text-decoration: none;" href="{% url "bug_bounty:bug_bounty_registration" %}" class="sidebar-item"><i class="fas fa-bug"></i> Bug Bounty</a>
+                    <a style="text-decoration: none;" href="{% url "bug_bounty:bug_bounty_submissions" %}" class="sidebar-item"><i class="fas fa-paper-plane"></i> Bug Bounty Submission</a>
+                </div>
+            </div>
+
+            <!-- Account -->
+            <div class="sidebar-section">
+                <div class="sidebar-header" onclick="toggleSidebarSection(this)">
+                    <span>Compliance</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="sidebar-items">
+                    <a style="text-decoration: none;" href="{% url "bug_bounty:documents_template" %}" class="sidebar-item"><i class="fas fa-file-alt"></i> Templates</a>
+                    <a style="text-decoration: none;" href="{% url "bug_bounty:compliance_ai" %}" class="sidebar-item active"><i class="fas fa-gavel"></i> Compliance AI</a>
+
+                </div>
+            </div>
+
+            <!-- AI Analysis Tools -->
+            <div class="sidebar-section">
+                <div class="sidebar-header" onclick="toggleSidebarSection(this)">
+                    <span>Background Checks</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="sidebar-items">
+                    
+                    <a style="text-decoration: none;" href="{% url "bug_bounty:verify_document" %}" class="sidebar-item"><i class="fas fa-file"></i> Document Verification</a>
+                    <a style="text-decoration: none;" href="{% url "bug_bounty:resume" %}" class="sidebar-item"><i class="fas fa-check"></i> Background Check</a>
+                    
+                </div>
+            </div>   
+        </aside>
+        <!-- Main Content -->
+        <main class="main-content">
+
+            <div class="chat-container">
+        <div class="chat-content">
+            <h1 class="chat-title">What can I help with?</h1>
+            
+            <div class="chat-messages" id="chatMessages">
+                <div class="typing-indicator" id="typingIndicator">
+                    <div class="typing-content">
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="input-container">
+        <div class="input-wrapper">
+            <!-- Attachment Icon -->
+            <textarea 
+                id="chatInput" 
+                class="chat-input" 
+                placeholder="Ask anything"
+                rows="1"
+            ></textarea>
+            <button id="sendButton" class="send-button">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+        </main>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <div id="toastMessage"></div>
+    </div>
+    </body>
+
+<script src="{% static "js/script.js" %}"></script>
+<script src="{% static "js/chat.js" %}"></script>
+</body>
+</html>

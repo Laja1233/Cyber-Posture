@@ -1,0 +1,729 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bug Bounty Submission | Wema Bank</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="shortcut icon" href="{% static "images/icon.png" %}" type="image/x-icon">
+    <link rel="stylesheet" href="{% static "css/style.css" %}">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #004aad 100%);
+            --primary-blue: #3b82f6;
+            --bg-card: #ffffff;
+            --bg-primary: #f8fafc;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --text-muted: #94a3b8;
+            --border-color: #e2e8f0;
+            --border-hover: #cbd5e1;
+            --error: #ef4444;
+            --success: #10b981;
+            --radius: 8px;
+            --radius-lg: 12px;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            --transition: all 0.2s ease-in-out;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f1f5f9;
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding: 2rem;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            text-decoration: none;
+        }
+
+        .navbar-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-menu {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        .app-container {
+            display: flex;
+            margin-top: 80px;
+            gap: 2rem;
+        }
+
+        .sidebar {
+            width: 280px;
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            height: fit-content;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+        }
+
+        .sidebar-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius);
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: var(--transition);
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar-item:hover {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+        }
+
+        .sidebar-item.active {
+            background: var(--primary-gradient);
+            color: white;
+        }
+
+        .sidebar-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+            border-radius: var(--radius);
+            transition: var(--transition);
+        }
+
+        .sidebar-header:hover {
+            background: var(--bg-primary);
+        }
+
+        .sidebar-items {
+            margin-left: 1rem;
+        }
+
+        .main-content {
+            flex: 1;
+            background: white;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+        }
+
+        .company-registration-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .page-header {
+            background: var(--primary-gradient);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            color: white;
+            text-align: center;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-subtitle {
+            opacity: 0.9;
+            font-size: 1.125rem;
+        }
+
+        .form-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .section-title i {
+            width: 32px;
+            height: 32px;
+            background: var(--primary-gradient);
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.875rem;
+        }
+
+        .required {
+            color: var(--error);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgb(59 130 246 / 0.1);
+        }
+
+        .select-control {
+            cursor: pointer;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 0.5rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        .info-box {
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: var(--radius);
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .info-box i {
+            color: var(--primary-blue);
+            margin-right: 0.5rem;
+        }
+
+        .info-box p {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin: 0;
+        }
+
+        .reward-tier {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .reward-tier h4 {
+            color: var(--success);
+            font-size: 1.125rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .reward-tier p {
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .reward-amount {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--success);
+        }
+
+        .scope-list {
+            list-style: none;
+            margin-top: 1rem;
+        }
+
+        .scope-list li {
+            background: var(--bg-primary);
+            padding: 0.8rem 1rem;
+            margin-bottom: 0.5rem;
+            border-radius: var(--radius);
+            color: var(--text-secondary);
+            border-left: 3px solid var(--primary-blue);
+        }
+
+        .guidelines-list {
+            list-style: none;
+        }
+
+        .guidelines-list li {
+            background: var(--bg-primary);
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            border-radius: var(--radius);
+            color: var(--text-secondary);
+            position: relative;
+            padding-left: 3rem;
+        }
+
+        .guidelines-list li::before {
+            content: "✓";
+            position: absolute;
+            left: 1rem;
+            color: var(--success);
+            font-weight: bold;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.75rem;
+            justify-content: flex-end;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius);
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: var(--transition);
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: var(--primary-gradient);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-primary);
+            border-color: var(--border-hover);
+        }
+
+        .success-message {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            color: var(--success);
+            padding: 1rem;
+            border-radius: var(--radius);
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+
+            .app-container {
+                flex-direction: column;
+                margin-top: 70px;
+            }
+
+            .sidebar {
+                width: 100%;
+                margin-bottom: 1rem;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .page-title {
+                font-size: 1.5rem;
+            }
+
+            .company-registration-container {
+                padding: 1rem;
+            }
+
+            .mobile-menu-toggle {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    {% include "navbar.html" %}
+
+    <!-- Overlay for mobile -->
+    <div class="overlay" onclick="closeMobileMenu()"></div>
+
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <!-- Main Navigation -->
+            <a style="text-decoration: none;" href="{% url "bug_bounty:bug_bounty_landing" %}" class="sidebar-item" style="margin-bottom: 1.5rem;"><i class="fas fa-home"></i> Other Programs</a>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="company-registration-container">
+                <!-- Page Header -->
+                <div class="page-header">
+                    <h1 class="page-title">
+                        {{company.company_name}} Bug Bounty Program
+                    </h1>
+                    <p class="page-subtitle">
+                        {{company.program.description_and_goals.html|safe}}
+                        {% comment %} Help us secure Nigeria's digital banking future. Submit security vulnerabilities and get rewarded. {% endcomment %}
+                    </p>
+                </div>
+
+                <!-- Program Information -->
+                <div class="form-section">
+                    <h3 class="section-title">
+                        <i class="fas fa-star"></i>
+                        Reward Structure
+                    </h3>
+                    
+                    <div class="reward-tier">
+                        <h4>Critical Vulnerabilities</h4>
+                        <p>Remote Code Execution, Authentication Bypass, SQL Injection on core banking systems</p>
+                        <div class="reward-amount">₦500,000 - ₦2,000,000</div>
+                    </div>
+                    {% comment %}                     
+                    <div class="reward-tier">
+                        <h4>High Severity</h4>
+                        <p>Privilege Escalation, Sensitive Customer Data Exposure, Payment System Bypass</p>
+                        <div class="reward-amount">₦100,000 - ₦500,000</div>
+                    </div>
+                    
+                    <div class="reward-tier">
+                        <h4>Medium Severity</h4>
+                        <p>CSRF, XSS, Information Disclosure, Session Management Issues</p>
+                        <div class="reward-amount">₦25,000 - ₦100,000</div>
+                    </div>
+                    
+                    <div class="reward-tier">
+                        <h4>Low Severity</h4>
+                        <p>Security Misconfigurations, Rate Limiting Issues, Minor Information Leaks</p>
+                        <div class="reward-amount">₦5,000 - ₦25,000</div>
+                    </div> {% endcomment %}
+                </div>
+
+                <!-- Scope Information -->
+                <div class="form-section">
+                    <h3 class="section-title">
+                        <i class="fas fa-crosshairs"></i>
+                        Program Scope
+                    </h3>
+                    
+                    <div class="info-box">
+                        <i class="fas fa-info-circle"></i>
+                        <p>The following assets are in scope for testing. Please ensure you only test against these approved targets.</p>
+                    </div>
+
+                    <ul class="scope-list">
+                        {% for scope in program_scope %}
+                            <li> {{scope}} </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <!-- Submission Form -->
+                <form id="bugBountyForm" method="post">
+                    {% csrf_token %}
+                    <!-- Reporter Information -->
+                    <div class="form-section">
+                        <h3 class="section-title">
+                            <i class="fas fa-user"></i>
+                            Reporter Information
+                        </h3>
+                        
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="reporterName">Full Name <span class="required">*</span></label>
+                                {% comment %} <input type="text" id="reporterName" name="reporterName" class="form-control" required> {% endcomment %}
+                                {{form.author}}
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="email">Email Address <span class="required">*</span></label>
+                                {{form.email}}
+                                {% comment %} <input type="email" id="email" name="email" class="form-control" required> {% endcomment %}
+                            </div>
+                        </div>
+
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="phone">Phone Number</label>
+                                {{form.phone_number}}
+                                {% comment %} <input type="tel" id="phone" name="phone" class="form-control" placeholder="+234 xxx xxx xxxx"> {% endcomment %}
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="company">Company/Organization</label>
+                                {{form.company}}
+                                {% comment %} <input type="text" id="company" name="company" class="form-control" placeholder="Optional"> {% endcomment %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Vulnerability Details -->
+                    <div class="form-section">
+                        <h3 class="section-title">
+                            <i class="fas fa-bug"></i>
+                            Vulnerability Details
+                        </h3>
+                        
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="severity">Severity Level <span class="required">*</span></label>
+                                {{form.severity_level}}
+                                {% comment %} <select id="severity" name="severity" class="form-control select-control" required>
+                                    <option value="">Select severity</option>
+                                    <option value="critical">Critical</option>
+                                    <option value="high">High</option>
+                                    <option value="medium">Medium</option>
+                                    <option value="low">Low</option>
+                                </select> {% endcomment %}
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="category">Vulnerability Type <span class="required">*</span></label>
+                                {{form.vulnerability_type}}
+                                {% comment %} <select id="category" name="category" class="form-control select-control" required>
+                                    <option value="">Select vulnerability type</option>
+                                    <option value="rce">Remote Code Execution</option>
+                                    <option value="sqli">SQL Injection</option>
+                                    <option value="xss">Cross-Site Scripting (XSS)</option>
+                                    <option value="csrf">Cross-Site Request Forgery</option>
+                                    <option value="auth">Authentication Issues</option>
+                                    <option value="authz">Authorization Issues</option>
+                                    <option value="data-exposure">Data Exposure</option>
+                                    <option value="session">Session Management</option>
+                                    <option value="crypto">Cryptographic Issues</option>
+                                    <option value="business-logic">Business Logic Flaw</option>
+                                    <option value="other">Other</option>
+                                </select> {% endcomment %}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="title">Vulnerability Title <span class="required">*</span></label>
+                            {{form.vulnerability_title}}
+                            {% comment %} <input type="text" id="title" name="title" class="form-control" 
+                                   placeholder="Provide a clear, descriptive title for the vulnerability" required> {% endcomment %}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="url">Affected URL/System <span class="required">*</span></label>
+                            {{form.affected_url}}
+                            {% comment %} <input type="url" id="url" name="url" class="form-control" 
+                                   placeholder="https://example.wemabank.com/vulnerable-endpoint" required> {% endcomment %}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="description">Detailed Description <span class="required">*</span></label>
+                            {{form.description}}
+                            {% comment %} <textarea id="description" name="description" class="form-control" rows="5" 
+                                      placeholder="Provide a detailed technical description of the vulnerability, including how it works and what makes it exploitable..." required></textarea> {% endcomment %}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="reproduction">Steps to Reproduce <span class="required">*</span></label>
+                            {{form.steps_to_reproduce}}
+                            {% comment %} <textarea id="reproduction" name="reproduction" class="form-control" rows="6" 
+                                      placeholder="Provide clear, step-by-step instructions to reproduce the vulnerability:&#10;&#10;1. Navigate to https://...&#10;2. Login with credentials...&#10;3. Click on...&#10;4. Observe that..." required></textarea> {% endcomment %}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="impact">Business Impact <span class="required">*</span></label>
+                            {{form.business_impact}}
+                            {% comment %} <textarea id="impact" name="impact" class="form-control" rows="4" 
+                                      placeholder="Describe the potential impact on Wema Bank's operations, customer data security, financial transactions, etc." required></textarea> {% endcomment %}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="mitigation">Recommended Mitigation</label>
+                            {{ form.recommended_mitigation }}
+                            {% comment %} <textarea id="mitigation" name="mitigation" class="form-control" rows="3" 
+                                      placeholder="Optional: Suggest how this vulnerability could be fixed or mitigated"></textarea> {% endcomment %}
+                        </div>
+                    </div>
+
+                    <!-- Additional Information -->
+                    <div class="form-section">
+                        <h3 class="section-title">
+                            <i class="fas fa-info-circle"></i>
+                            Additional Information
+                        </h3>
+
+                        <div class="form-group">
+                            <label for="tools">Tools/Methods Used</label>
+                            {{form.tools_and_method}}
+                            {% comment %} <input type="text" id="tools" name="tools" class="form-control" 
+                                   placeholder="e.g., Burp Suite, OWASP ZAP, Custom scripts, Manual testing"> {% endcomment %}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="timeline">Discovery Timeline</label>
+                            {{form.discovery_timeline}}
+                            {% comment %} <input type="text" id="timeline" name="timeline" class="form-control" 
+                                   placeholder="When did you first discover this vulnerability?"> {% endcomment %}
+                        </div>
+                        <div class="form-group">
+                            <label for="additionalNotes">Additional Notes</label>
+                            {{form.notes}}
+                            {% comment %} <textarea id="additionalNotes" name="additionalNotes" class="form-control" rows="3" placeholder="Any additional context, related findings, or notes you'd like to share..."></textarea> {% endcomment %}
+                        </div>
+                    </div>
+
+                    <div class="success-message" id="successMessage">
+                        <i class="fas fa-check-circle"></i>
+                        Thank you for your submission! Our security team will review your report within 48 hours and respond with next steps.
+                    </div>
+
+                    <!-- Submit Section -->
+                    <div class="action-buttons">
+                        <button type="button" class="btn btn-secondary">
+                            <i class="fas fa-save"></i>
+                            Save Draft
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-paper-plane"></i>
+                            Submit Vulnerability Report
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Guidelines -->
+                <div class="form-section">
+                    <h3 class="section-title">
+                        <i class="fas fa-gavel"></i>
+                        Program Guidelines & Rules
+                    </h3>
+                    
+                    <div class="info-box">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <p>Please read and follow these guidelines carefully. Failure to comply may result in disqualification from the program.</p>
+                    </div>
+
+                    <ul class="guidelines-list">
+                        <li>Only test against systems explicitly listed in the program scope</li>
+                        <li>Do not access, modify, or delete customer data or personal information</li>
+                        <li>Do not perform any actions that could disrupt services or operations</li>
+                        <li>Submit only original research that hasn't been publicly disclosed</li>
+                        <li>Provide clear proof of concept without causing actual harm</li>
+                        <li>Allow reasonable time for the organization to address the issue before public disclosure</li>
+                        <li>Social engineering attacks against employees are strictly prohibited</li>
+                        <li>Physical testing of facilities is not permitted without prior approval</li>
+                        <li>Automated scanners must be rate-limited and non-intrusive</li>
+                        <li>Multiple reports of the same vulnerability will be rewarded on a first-come basis</li>
+                        <li>All testing must comply with applicable laws and regulations</li>
+                        <li>Researchers must not attempt to access accounts that do not belong to them</li>
+                        <li>Report vulnerabilities through official channels only</li>
+                        <li>Do not publicly disclose vulnerabilities before they are resolved</li>
+                        <li>Respect the privacy and security of other users and systems</li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    
+    <script src="{% static "js/script.js" %}"></script>
+
+</body>
+</html>

@@ -1,0 +1,607 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bug Bounty Submission 1 | Cyber Posture</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="shortcut icon" href="{% static "images/icon.png" %}" type="image/x-icon">
+    <link rel="stylesheet" href="{% static "css/style.css" %}">
+    <style>
+        
+         * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        
+        body {
+           overflow-x: hidden;
+        }
+
+         .page-header {
+            background: var(--primary-gradient);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            color: white;
+            text-align: center;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-subtitle {
+            opacity: 0.9;
+            font-size: 1.125rem;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-subtitle {
+            opacity: 0.9;
+            font-size: 1.125rem;
+        }
+
+        .header-stats {
+            display: flex;
+            gap: 2rem;
+            text-align: center;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            opacity: 0.9;
+        }
+
+        .filters-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .filters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            align-items: end;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .filter-label {
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.875rem;
+        }
+
+        .filter-control {
+            padding: 0.5rem;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            transition: var(--transition);
+        }
+
+        .filter-control:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgb(59 130 246 / 0.1);
+        }
+
+        .submissions-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .submission-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+        }
+
+        .submission-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .submission-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .submission-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .submission-id {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            font-family: 'Courier New', monospace;
+        }
+
+        .submission-badges {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .severity-critical {
+            background: rgba(220, 38, 38, 0.1);
+            color: #dc2626;
+        }
+
+        .severity-high {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+        }
+
+        .severity-medium {
+            background: rgba(245, 158, 11, 0.1);
+            color: #f59e0b;
+        }
+
+        .severity-low {
+            background: rgba(34, 197, 94, 0.1);
+            color: #22c55e;
+        }
+
+        .status-new {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--primary-blue);
+        }
+
+        .status-reviewing {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+        }
+
+        .status-verified {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+        }
+
+        .status-rejected {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--error);
+        }
+
+        .submission-meta {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .meta-item i {
+            width: 16px;
+            color: var(--text-muted);
+        }
+
+        .researcher-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem;
+            background: var(--bg-primary);
+            border-radius: var(--radius);
+            margin-bottom: 1rem;
+        }
+
+        .researcher-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .researcher-details h4 {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            color: var(--text-primary);
+        }
+
+        .researcher-details p {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin: 0;
+        }
+
+        .contact-info {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 0.5rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .submission-description {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .submission-actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius);
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.875rem;
+            transition: var(--transition);
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: var(--primary-gradient);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-primary);
+            border-color: var(--border-hover);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-warning {
+            background: var(--warning);
+            color: white;
+        }
+
+        .btn-danger {
+            background: var(--error);
+            color: white;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 2rem;
+        }
+
+        .pagination-btn {
+            padding: 0.5rem 0.75rem;
+            border: 1px solid var(--border-color);
+            background: white;
+            color: var(--text-secondary);
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+        }
+
+        .pagination-btn:hover {
+            background: var(--bg-primary);
+            border-color: var(--border-hover);
+        }
+
+        .pagination-btn.active {
+            background: var(--primary-gradient);
+            color: white;
+            border-color: transparent;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-muted);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+
+            .header-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .header-stats {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .filters-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .submission-meta {
+                grid-template-columns: 1fr;
+            }
+
+            .submission-actions {
+                justify-content: flex-start;
+            }
+
+            .page-title {
+                font-size: 1.5rem;
+            }
+        }
+        .downloads-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+
+.download-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  color: var(--text-primary);
+  font-weight: 500;
+  font-size: 0.875rem;
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+.download-item i {
+  font-size: 1rem;
+  color: var(--primary-blue);
+}
+
+.download-item:hover {
+  background: var(--bg-primary);
+  border-color: var(--primary-blue);
+  transform: translateY(-1px);
+}
+
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    {% include "navbar.html" %}
+    <!-- Overlay for mobile -->
+    <div class="overlay" onclick="closeMobileMenu()"></div>
+    <div class="app-container">
+        <!-- Sidebar -->
+         <aside class="sidebar">
+            <!-- Main Navigation -->
+            <a style="text-decoration: none;" href="{% url "core:dashboard" %}" class="sidebar-item" style="margin-bottom: 1.5rem;"><i class="fas fa-home"></i> Dashboard</a>
+            
+            <!-- Profile Management -->
+            <div class="sidebar-section">
+                <div class="sidebar-header" onclick="toggleSidebarSection(this)">
+                    <span>Company Tools</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="sidebar-items">
+                    <a style="text-decoration: none;" href="{% url "bug_bounty:bug_bounty_registration" %}" class="sidebar-item"><i class="fas fa-bug"></i> Bug Bounty</a>
+                    <a style="text-decoration: none;" href="{% url "bug_bounty:bug_bounty_submissions" %}" class="sidebar-item active"><i class="fas fa-paper-plane"></i> Bug Bounty Submission</a>
+                </div>
+            </div>
+
+            <!-- Account -->
+            <div class="sidebar-section">
+                <div class="sidebar-header" onclick="toggleSidebarSection(this)">
+                    <span>Compliance</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="sidebar-items">
+                    <a style="text-decoration: none;" href="{% url "bug_bounty:documents_template" %}" class="sidebar-item"><i class="fas fa-file-alt"></i> Templates</a>
+                    <a style="text-decoration: none;" href="{% url "bug_bounty:compliance_ai" %}" class="sidebar-item"><i class="fas fa-gavel"></i> Compliance AI</a>
+
+                </div>
+            </div>
+
+            <!-- AI Analysis Tools -->
+            <div class="sidebar-section">
+                <div class="sidebar-header" onclick="toggleSidebarSection(this)">
+                    <span>Background Checks</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="sidebar-items">
+                    
+                    <a style="text-decoration: none;" href="{% url "bug_bounty:verify_document" %}" class="sidebar-item"><i class="fas fa-file"></i> Document Verification</a>
+                    <a style="text-decoration: none;" href="{% url "bug_bounty:resume" %}" class="sidebar-item"><i class="fas fa-check"></i> Background Check</a>
+                    
+                </div>
+            </div>   
+        </aside>
+          <main class="main-content">
+      <div class="page-header">
+        <div class="page-title" id="reportTitle">Report: {{report.vulnerability_title|capfirst}} </div>
+        <div class="page-subtitle" id="reportId">Submission ID: #{{report.id}} </div>
+      </div>
+      <div class="researcher-info">
+        <div class="researcher-details">
+          <h4 id="researcherName"> {{report.author}} </h4>
+          <div style="color:var(--text-secondary);">Independent Researcher</div>
+          <div class="contact-info">
+            <div><i class="fas fa-envelope"></i> {{report.email}} </div>
+            <div><i class="fab fa-linkedin"></i> mikejsecurity</div>
+          </div>
+        </div>
+      </div>
+      <div class="submission-card">
+        <div class="submission-title">Vulnerability Overview</div>
+        <div class="submission-description" id="vulnOverview">
+            {{report.description}}
+          {% comment %} JWT token validation bypass allowing unauthorized access to protected endpoints. The signature verification can be bypassed using the <code>none</code> algorithm. {% endcomment %}
+        </div>
+
+        <div class="submission-title">Impact</div>
+        <div class="submission-description" id="impact">
+            {{report.business_impact|linebreaks}}
+          {% comment %} Attackers can access sensitive data and perform privileged actions without authentication. {% endcomment %}
+        </div>
+
+        <div class="submission-title">Steps to Reproduce</div>
+        <div class="submission-description">
+            {{report.steps_to_reproduce|linebreaksbr}}
+          {% comment %} <ol>
+            <li>Intercept a valid JWT request.</li>
+            <li>Change the signing algorithm to <code>none</code>.</li>
+            <li>Send the modified token to the server.</li>
+            <li>Server accepts it as valid and grants access.</li>
+          </ol> {% endcomment %}
+        </div>
+
+        <div class="submission-title">Affected Asset</div>
+        <div class="submission-description" id="affected"> {{report.affected_url}} </div>
+
+        <div class="submission-title">Severity & Status</div>
+        <div class="submission-badges">
+          <span class="badge severity-{{report.severity_level}}">{{report.severity_level|capfirst}}</span>
+          <span class="badge status-reviewing">Reviewing</span>
+        </div>
+      </div>
+
+      <!-- Downloads Section -->
+      <div class="submission-card">
+        <div class="submission-title">Attachments / Downloads</div>
+
+        <div class="downloads-list" id="downloadsList">
+          <!-- Each link should point to a file in your docs/ folder. -->
+          <a href="docs/jwt_poc.pdf" download class="download-item">
+            <i class="fas fa-file-pdf"></i>
+            Proof of Concept (PDF)
+          </a>
+
+          <a href="docs/request_logs.txt" download class="download-item">
+            <i class="fas fa-file-alt"></i>
+            Request Logs (TXT)
+          </a>
+
+          <a href="docs/screenshot.png" download class="download-item">
+            <i class="fas fa-file-image"></i>
+            Exploit Screenshot (PNG)
+          </a>
+        </div>
+
+
+      </div>
+
+      <!-- Actions -->
+      <div class="submission-actions" style="margin-top:0.6rem;">
+        <button class="btn btn-secondary" onclick="window.history.back();"><i class="fas fa-arrow-left"></i> Back</button>
+      </div>
+
+    </main>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <div id="toastMessage"></div>
+    </div>
+
+   
+
+    </body>
+
+<script src="{% static "js/script.js" %}"></script>
+</body>
+</html>

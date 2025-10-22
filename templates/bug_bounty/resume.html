@@ -1,0 +1,396 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Background Checker | Cyber Posture</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="shortcut icon" href="{% static "images/icon.png" %}" type="image/x-icon">
+    <link rel="stylesheet" href="{% static "css/style.css" %}">
+</head>
+<body>
+    <!-- Navigation -->
+    {% include "navbar.html" %}
+
+    <!-- Overlay for mobile -->
+    <div class="overlay" onclick="closeMobileMenu()"></div>
+
+    <div class="app-container">
+        <!-- Sidebar -->
+         
+         <aside class="sidebar">
+    <!-- Main Navigation -->
+            <a style="text-decoration: none;" href="{% url "core:dashboard" %}" class="sidebar-item" style="margin-bottom: 1.5rem;"><i class="fas fa-home"></i> Dashboard</a>
+            
+            <!-- Profile Management -->
+            <div class="sidebar-section">
+                <div class="sidebar-header" onclick="toggleSidebarSection(this)">
+                    <span>Company Tools</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="sidebar-items">
+                    <a style="text-decoration: none;" href="{% url "bug_bounty:bug_bounty_registration" %}" class="sidebar-item"><i class="fas fa-bug"></i> Bug Bounty</a>
+                    <a style="text-decoration: none;" href="{% url "bug_bounty:bug_bounty_submissions" %}" class="sidebar-item"><i class="fas fa-paper-plane"></i> Bug Bounty Submission</a>
+                </div>
+            </div>
+
+            <!-- Account -->
+            <div class="sidebar-section">
+                <div class="sidebar-header" onclick="toggleSidebarSection(this)">
+                    <span>Compliance</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="sidebar-items">
+                    <a style="text-decoration: none;" href="{% url "bug_bounty:documents_template" %}" class="sidebar-item"><i class="fas fa-file-alt"></i> Templates</a>
+                    <a style="text-decoration: none;" href="{% url "bug_bounty:compliance_ai" %}" class="sidebar-item"><i class="fas fa-gavel"></i> Compliance AI</a>
+
+                </div>
+            </div>
+
+            <!-- AI Analysis Tools -->
+            <div class="sidebar-section">
+                <div class="sidebar-header" onclick="toggleSidebarSection(this)">
+                    <span>Background Checks</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="sidebar-items">
+                    
+                    <a style="text-decoration: none;" href="{% url "bug_bounty:verify_document" %}" class="sidebar-item"><i class="fas fa-file"></i> Document Verification</a>
+                    <a style="text-decoration: none;" href="{% url "bug_bounty:resume" %}" class="sidebar-item active"><i class="fas fa-check"></i> Background Check</a>
+                    
+                </div>
+            </div>   
+        </aside>
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Upload Card - State 1: No Resume -->
+            <div class="upload-card" id="uploadCardEmpty">
+                <div class="upload-state-empty">
+                    <h2>Upload Resume for Background Verification</h2>
+                    <p>Drag and drop your resume or click to browse files</p>
+                    
+                    <div class="upload-zone" onclick="document.getElementById('fileInput').click()">
+                        <div class="upload-icon">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                        </div>
+                        <div class="upload-text">Click to upload or drag and drop</div>
+                        <div class="upload-hint">PDF, DOC, DOCX (max 70MB)</div>
+                    </div>
+
+                    <input type="file" id="fileInput" class="file-input" accept=".pdf,.doc,.docx" onchange="handleFileUpload(event)">
+                </div>
+            </div>
+
+            <!-- Upload Card - State 2: Resume Uploaded -->
+            <div class="upload-card upload-state-filled" id="uploadCardFilled">
+                <h2>Resume Analysis</h2>
+                
+                <div class="file-preview">
+                    <div class="file-icon">
+                        <i class="fas fa-file-pdf"></i>
+                    </div>
+                    <div class="file-info">
+                        <h3 id="fileName">John_Doe_Resume.pdf</h3>
+                        <div class="file-meta">
+                            <span id="fileSize">2.4 MB</span> • 
+                            <span id="uploadTime">Uploaded 2 minutes ago</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="progress-container" id="progressContainer" style="display: none;">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <div class="progress-text" id="progressText">Initializing analysis...</div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn btn-primary" id="analyzeBtn" onclick="startAnalysis()">
+                        <i class="fas fa-robot"></i> Analyze with AI
+                    </button>
+                    <button class="btn btn-primary" id="scrapeBtn" onclick="startWebScraping()">
+                        <i class="fas fa-spider"></i> Start Web Scraping
+                    </button>
+                    <button class="btn btn-secondary" onclick="uploadNewFile()">
+                        <i class="fas fa-upload"></i> Upload Different File
+                    </button>
+                </div>
+            </div>
+
+            <!-- Candidate Details Form -->
+            <div class="form-section">
+                <h3>Candidate Details</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="candidateName">Full Name</label>
+                        <input type="text" id="candidateName" class="form-control" placeholder="Enter candidate's full name">
+                    </div>
+                    <div class="form-group">
+                        <label for="targetPosition">Target Position</label>
+                        <input type="text" id="targetPosition" class="form-control" placeholder="e.g., Senior Software Engineer">
+                    </div>
+                    
+                </div>
+            </div>
+
+            <!-- Verification Scope -->
+            <div class="form-section">
+                <h3>Verification Scope</h3>
+                <p>Select the areas you want to verify:</p>
+                <div class="checkbox-grid">
+                    <label class="checkbox-item">
+                        <input type="checkbox" value="linkedin" checked>
+                        <i class="fab fa-linkedin"></i>
+                        <span>LinkedIn Profile</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" value="github" checked>
+                        <i class="fab fa-github"></i>
+                        <span>GitHub Profile</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" value="company" checked>
+                        <i class="fas fa-building"></i>
+                        <span>Company Websites</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" value="academic" checked>
+                        <i class="fas fa-graduation-cap"></i>
+                        <span>Academic Records</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" value="social">
+                        <i class="fas fa-users"></i>
+                        <span>Social Media</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" value="professional">
+                        <i class="fas fa-certificate"></i>
+                        <span>Professional Associations</span>
+                    </label>
+                </div>
+            </div>
+
+           
+            <!-- Results Dashboard -->
+            <div class="results-section" id="resultsSection">
+                <!-- Work History Verification -->
+                <div class="result-card animate-fadeInUp">
+                    <div class="result-header">
+                        <div class="result-title">
+                            <i class="fas fa-briefcase"></i>
+                            Work History Verification
+                        </div>
+                        <div class="confidence-badge confidence-high">92% Verified</div>
+                    </div>
+                    <div class="result-content">
+                        <p>Analysis of employment history, job titles, and tenure periods</p>
+                        <ul class="result-items">
+                            <li>
+                                <div class="status-icon status-verified">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                Senior Software Engineer at TechCorp (2020-2023)
+                            </li>
+                            <li>
+                                <div class="status-icon status-verified">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                Software Developer at StartupXYZ (2018-2020)
+                            </li>
+                            <li>
+                                <div class="status-icon status-pending">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                Junior Developer at WebStudio (2017-2018)
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Education Validation -->
+                <div class="result-card animate-fadeInUp">
+                    <div class="result-header">
+                        <div class="result-title">
+                            <i class="fas fa-graduation-cap"></i>
+                            Education Validation
+                        </div>
+                        <div class="confidence-badge confidence-high">95% Verified</div>
+                    </div>
+                    <div class="result-content">
+                        <p>Verification of degrees, institutions, and certifications</p>
+                        <ul class="result-items">
+                            <li>
+                                <div class="status-icon status-verified">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                BS Computer Science - State University (2017)
+                            </li>
+                            <li>
+                                <div class="status-icon status-verified">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                AWS Solutions Architect Certification
+                            </li>
+                            <li>
+                                <div class="status-icon status-verified">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                Google Cloud Professional Certificate
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Skills Authentication -->
+                <div class="result-card animate-fadeInUp">
+                    <div class="result-header">
+                        <div class="result-title">
+                            <i class="fas fa-code"></i>
+                            Skills Authentication
+                        </div>
+                        <div class="confidence-badge confidence-medium">78% Verified</div>
+                    </div>
+                    <div class="result-content">
+                        <p>Analysis of technical skills and project evidence</p>
+                        <ul class="result-items">
+                            <li>
+                                <div class="status-icon status-verified">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                JavaScript/React - Strong evidence
+                            </li>
+                            <li>
+                                <div class="status-icon status-verified">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                Python/Django - Portfolio projects found
+                            </li>
+                            <li>
+                                <div class="status-icon status-pending">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                Machine Learning - Limited evidence
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Reference Cross-checking -->
+                <div class="result-card animate-fadeInUp">
+                    <div class="result-header">
+                        <div class="result-title">
+                            <i class="fas fa-user-friends"></i>
+                            Reference Cross-checking
+                        </div>
+                        <div class="confidence-badge confidence-high">88% Verified</div>
+                    </div>
+                    <div class="result-content">
+                        <p>Validation of professional references and recommendations</p>
+                        <ul class="result-items">
+                            <li>
+                                <div class="status-icon status-verified">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                LinkedIn recommendations (5 found)
+                            </li>
+                            <li>
+                                <div class="status-icon status-verified">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                Professional contacts verified
+                            </li>
+                            <li>
+                                <div class="status-icon status-pending">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                Direct reference contact pending
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Social Media Consistency -->
+                <div class="result-card animate-fadeInUp">
+                    <div class="result-header">
+                        <div class="result-title">
+                            <i class="fas fa-share-alt"></i>
+                            Social Media Consistency
+                        </div>
+                        <div class="confidence-badge confidence-medium">82% Consistent</div>
+                    </div>
+                    <div class="result-content">
+                        <p>Analysis of professional image alignment across platforms</p>
+                        <ul class="result-items">
+                            <li>
+                                <div class="status-icon status-verified">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                LinkedIn profile matches resume
+                            </li>
+                            <li>
+                                <div class="status-icon status-verified">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                GitHub activity supports claims
+                            </li>
+                            <li>
+                                <div class="status-icon status-pending">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                                Twitter profile needs review
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Red Flag Detection -->
+                <div class="result-card animate-fadeInUp">
+                    <div class="result-header">
+                        <div class="result-title">
+                            <i class="fas fa-flag"></i>
+                            Red Flag Detection
+                        </div>
+                        <div class="confidence-badge confidence-high">2 Issues Found</div>
+                    </div>
+                    <div class="result-content">
+                        <p>Identification of potential discrepancies or concerns</p>
+                        <ul class="result-items">
+                            <li>
+                                <div class="status-icon status-failed">
+                                    <i class="fas fa-times"></i>
+                                </div>
+                                Date overlap in employment history
+                            </li>
+                            <li>
+                                <div class="status-icon status-pending">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                                Unverified certification claim
+                            </li>
+                            <li>
+                                <div class="status-icon status-verified">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                No criminal background issues
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+        </div>
+        </main>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <div id="toastMessage"></div>
+    </div>
+    </body>
+
+<script src="{% static "js/resume.js" %}"></script>
+<script src="{% static "js/script.js" %}"></script>
+</body>
+</html>
