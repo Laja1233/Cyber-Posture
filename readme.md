@@ -4,11 +4,11 @@ A Django-based cybersecurity posture management application.
 
 ## Screenshots
 
-### Dashboard
-![Dashboard](screenshot/1.png)
+### Home Page
+![Home Page](screenshot/1.png)
 
-### Bug Bounty Module
-![Bug Bounty](screenshot/2.png)
+### Dashboard
+![Dashboard](screenshot/2.png)
 
 ## Prerequisites
 
